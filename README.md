@@ -61,7 +61,7 @@ The **Panel** tab lets each player choose their accent color, corner style, menu
    ```
 4. Restart your server. Done.
 
-> Pairs perfectly with [MetaDev Loadscreen](https://github.com/MetaDevelopmentHQ), built in the same design language.
+> Pairs perfectly with [MetaDev Loadscreen](https://github.com/MetaDevelopmentHQ/loadscreen), built in the same design language.
 
 ## Configuration
 
