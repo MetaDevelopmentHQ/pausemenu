@@ -61,7 +61,7 @@ GTA'nın ayar menüsü aynı temiz arayüzle baştan tasarlandı: kontrol, klavy
    ```
 4. Sunucuyu yeniden başlat. Bu kadar.
 
-> Aynı tasarım diliyle hazırlanan [MetaDev Loadscreen](https://github.com/MetaDevelopmentHQ) ile birlikte kullanmak için birebir.
+> Aynı tasarım diliyle hazırlanan [MetaDev Loadscreen](https://github.com/MetaDevelopmentHQ/loadscreen) ile birlikte kullanmak için birebir.
 
 ## Yapılandırma
 
