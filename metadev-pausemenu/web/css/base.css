@@ -1,0 +1,220 @@
+/* ==========================================================================
+   Base: fonts, theme variables, stage, transitions and shared parts
+   Sizes are the design's 1920x1080 virtual pixels; the stage is scaled to the screen in JS.
+   --fs : text scale (Panel > Text size)
+   --rk : corner factor (Panel > Corner style)
+   ========================================================================== */
+
+@font-face { font-family: 'Syne'; font-weight: 400 800; font-display: block; src: url('../fonts/syne-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Syne'; font-weight: 400 800; font-display: block; src: url('../fonts/syne-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Manrope'; font-weight: 200 800; font-display: block; src: url('../fonts/manrope-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Manrope'; font-weight: 200 800; font-display: block; src: url('../fonts/manrope-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 100 800; font-display: block; src: url('../fonts/jetbrainsmono-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 100 800; font-display: block; src: url('../fonts/jetbrainsmono-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  --accent: #F5B544;
+  --accent-soft: rgba(245, 181, 68, 0.14);
+  --fs: 1;
+  --rk: 1;
+
+  --text: #EDEFF2;
+  --text-strong: #F2F3F5;
+  --muted: #9AA3AE;
+  --muted-2: #8A929D;
+  --dim: #5E6670;
+  --nav: #A3ABB6;
+  --danger: #FF7A7A;
+  --danger-solid: #E5484D;
+  --ink: #0B0D10;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --transition: 180ms;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;          /* the game shows through */
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Dark backdrop instead of the game in the browser preview */
+body.is-preview { background: radial-gradient(circle at 70% 40%, #3a4250, #12161c 70%); }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+button:disabled { cursor: default; }
+
+/* --- App shell and open/close transition (fade + slight slide) --- */
+
+#app {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity var(--transition) ease, transform var(--transition) ease, visibility 0s linear var(--transition);
+}
+
+#app.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity var(--transition) ease, transform var(--transition) ease;
+}
+
+#app.is-closing { visibility: visible; }
+
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  font-family: var(--font-body);
+  color: var(--text);
+}
+
+#view, .view {
+  position: absolute;
+  inset: 0;
+}
+
+/* --- Shared parts --- */
+
+.accent { color: var(--accent); }
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: calc(12px * var(--fs));
+  letter-spacing: 3px;
+  color: var(--muted-2);
+}
+
+.mono-label.accent { color: var(--accent); }
+
+.kbd {
+  font-family: var(--font-mono);
+  font-size: calc(12px * var(--fs));
+  padding: 4px 8px;
+  border-radius: calc(6px * var(--rk));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #C9CFD6;
+  white-space: nowrap;
+}
+
+.hints {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: calc(14px * var(--fs));
+  color: var(--muted-2);
+}
+
+.credit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: calc(12px * var(--fs));
+  letter-spacing: 2px;
+  color: rgba(237, 239, 242, 0.42);
+}
+
+.credit img {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  opacity: 0.85;
+}
+
+.credit span { color: rgba(237, 239, 242, 0.75); }
+.credit.is-small img { width: 22px; height: 22px; }
+
+.dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--accent);
+}
+
+.dot.is-green { background: #4ADE80; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: calc(14px * var(--rk));
+  font-family: var(--font-body);
+  font-size: calc(16px * var(--fs));
+  font-weight: 700;
+  white-space: nowrap;
+  transition: filter 120ms ease, background 120ms ease, box-shadow 120ms ease;
+}
+
+.btn-lg {
+  height: 56px;
+  padding: 0 32px;
+  border-radius: calc(16px * var(--rk));
+  font-size: calc(17px * var(--fs));
+}
+
+.btn-accent { background: var(--accent); color: var(--ink); }
+.btn-danger { background: var(--danger-solid); color: #FFFFFF; }
+.btn-ghost { border: 1px solid rgba(255, 255, 255, 0.18); color: var(--text); }
+.btn:hover { filter: brightness(1.08); }
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.06); }
+.btn.is-focus { box-shadow: 0 0 0 2px var(--ink), 0 0 0 4px var(--accent); }
+
+/* Colour swatches (theme colour) */
+.swatches { display: flex; gap: 14px; }
+.swatches.is-small { gap: 16px; }
+
+.swatch {
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  background: var(--sw);
+  border: 3px solid var(--sw);
+  box-shadow: 0 0 0 2px transparent;
+  transition: transform 120ms ease;
+}
+
+.swatches.is-small .swatch { width: 48px; height: 48px; border-radius: 24px; }
+.swatch:hover { transform: scale(1.06); }
+.swatch.is-on { border-color: var(--ink); box-shadow: 0 0 0 2px var(--sw); }
+
+/* Thin scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 3px; }

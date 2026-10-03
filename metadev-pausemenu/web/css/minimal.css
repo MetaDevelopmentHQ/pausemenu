@@ -1,0 +1,190 @@
+/* ==========================================================================
+   Minimal pause menu (design/2-minimal.html)
+   ========================================================================== */
+
+.minimal { color: var(--text-strong); }
+
+.m-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(4, 6, 8, 0.9) 0%, rgba(4, 6, 8, 0.62) 40%, rgba(4, 6, 8, 0.2) 75%, rgba(4, 6, 8, 0.35) 100%);
+}
+
+.m-dim { color: rgba(242, 243, 245, 0.5); }
+
+/* --- Top row --- */
+
+.m-top {
+  position: absolute;
+  top: 56px;
+  left: 96px;
+  right: 96px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.m-brand { display: flex; align-items: baseline; gap: 20px; }
+
+.m-logo {
+  align-self: center;
+  width: 36px;
+  height: 36px;
+  border-radius: calc(10px * var(--rk));
+  object-fit: cover;
+}
+
+.m-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: calc(32px * var(--fs));
+  letter-spacing: -1px;
+}
+
+.m-clock {
+  font-family: var(--font-mono);
+  font-size: calc(13px * var(--fs));
+  letter-spacing: 2px;
+  color: rgba(242, 243, 245, 0.7);
+}
+
+/* --- Big type menu --- */
+
+.m-nav {
+  position: absolute;
+  left: 96px;
+  top: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.m-entry { display: flex; flex-direction: column; gap: 6px; }
+
+.m-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 64px;
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -2px;
+  font-size: calc(48px * var(--fs));
+  color: rgba(242, 243, 245, 0.32);
+  transition: font-size 150ms ease, color 150ms ease;
+}
+
+.m-item:hover { color: rgba(242, 243, 245, 0.55); }
+.m-item.is-on { font-size: calc(64px * var(--fs)); color: var(--text-strong); }
+.m-item.is-danger { color: rgba(255, 122, 122, 0.5); }
+.m-item.is-danger.is-on { color: var(--danger); }
+
+.m-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.m-item.is-on .m-dot { background: var(--accent); }
+
+.m-desc {
+  padding-left: 40px;
+  margin-bottom: 14px;
+  font-size: calc(18px * var(--fs));
+  color: rgba(242, 243, 245, 0.6);
+  animation: m-desc-in 160ms ease;
+}
+
+@keyframes m-desc-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* --- Right content (Rules, Settings, Discord) --- */
+
+.m-side {
+  position: absolute;
+  left: 56.25%;           /* 1080 / 1920 */
+  display: flex;
+  flex-direction: column;
+  animation: m-desc-in 160ms ease;
+}
+
+.m-rules { top: 270px; width: 680px; gap: 26px; max-height: 640px; overflow-y: auto; }
+.m-settings { top: 400px; gap: 22px; }
+.m-discord { top: 470px; gap: 12px; }
+
+.m-rule { display: flex; gap: 22px; align-items: baseline; }
+
+.m-rule-n {
+  font-family: var(--font-mono);
+  font-size: calc(13px * var(--fs));
+  color: var(--accent);
+}
+
+.m-rule-text { display: flex; flex-direction: column; gap: 4px; }
+.m-rule-title { font-size: calc(22px * var(--fs)); font-weight: 700; }
+.m-rule-body { font-size: calc(16px * var(--fs)); color: rgba(242, 243, 245, 0.6); }
+
+.m-note { font-size: calc(18px * var(--fs)); color: rgba(242, 243, 245, 0.6); }
+
+.m-big {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: calc(56px * var(--fs));
+  letter-spacing: -2px;
+}
+
+/* --- Bottom row --- */
+
+.m-bottom {
+  position: absolute;
+  left: 96px;
+  right: 96px;
+  bottom: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+}
+
+.m-announce { display: flex; flex-direction: column; gap: 10px; max-width: 760px; min-width: 0; }
+.m-announce-tag { font-size: calc(11px * var(--fs)); }
+
+.m-announce-text {
+  font-size: calc(17px * var(--fs));
+  color: rgba(242, 243, 245, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m-bottom-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.m-stats {
+  font-family: var(--font-mono);
+  font-size: calc(13px * var(--fs));
+  letter-spacing: 2px;
+  color: rgba(242, 243, 245, 0.7);
+}
+
+.minimal .credit { color: rgba(242, 243, 245, 0.45); }
+
+.m-accent-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--accent);
+}
