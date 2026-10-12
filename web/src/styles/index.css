@@ -1,0 +1,274 @@
+@import "@fontsource/rajdhani/latin-500.css";
+@import "@fontsource/rajdhani/latin-ext-500.css";
+@import "@fontsource/rajdhani/latin-600.css";
+@import "@fontsource/rajdhani/latin-ext-600.css";
+@import "@fontsource/rajdhani/latin-700.css";
+@import "@fontsource/rajdhani/latin-ext-700.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-ext-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-ext-500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Scale system: 1920x1080 = 16px, other resolutions scale proportionally via rem ---------- */
+html { font-size: calc(100% * var(--ui-scale, 1)); }
+@media screen and (max-width: 1900px) { html { font-size: calc(88% * var(--ui-scale, 1)); } }
+@media screen and (max-width: 1570px) { html { font-size: calc(75% * var(--ui-scale, 1)); } }
+@media screen and (max-width: 1400px) { html { font-size: calc(70% * var(--ui-scale, 1)); } }
+@media screen and (max-width: 1180px) { html { font-size: calc(60% * var(--ui-scale, 1)); } }
+@media screen and (max-width: 990px)  { html { font-size: calc(50% * var(--ui-scale, 1)); } }
+@media screen and (max-height: 900px) { html { font-size: calc(86% * var(--ui-scale, 1)); } }
+@media screen and (max-height: 800px) { html { font-size: calc(75% * var(--ui-scale, 1)); } }
+@media screen and (min-width: 2400px) { html { font-size: calc(125% * var(--ui-scale, 1)); } }
+@media screen and (min-width: 3400px) { html { font-size: calc(175% * var(--ui-scale, 1)); } }
+
+:root {
+  --accent: #ffb020;
+  --accent-rgb: 255, 176, 32;
+  --accent-ink: #141008;
+  --danger: #ff4d4d;
+  --danger-rgb: 255, 77, 77;
+  --surface: #141418;
+  --surface-hover: #1c1c22;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: "Inter", sans-serif;
+  color: #f2f2f2;
+}
+
+/* Theme: effect toggles */
+.no-scanlines .pm-scanlines { display: none; }
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after { animation: none !important; transition: none !important; }
+
+/* Fake "game" background while developing in the browser */
+body.dev-bg {
+  background-color: #1a2a33;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, #3b6a7a 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 70%, #5a4a3a 0%, transparent 50%),
+    linear-gradient(160deg, #23404d 0%, #10161a 100%);
+}
+
+/* ---------- Root layers (no border-radius -> rgba/opacity are safe) ---------- */
+.pm-root { position: fixed; inset: 0; animation: pm-fade-in 0.22s ease-out both; }
+.pm-root.is-closing { animation: pm-fade-out 0.18s ease-in both; }
+
+.pm-dim {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(ellipse at 0% 100%, rgba(var(--accent-rgb), 0.10) 0%, transparent 45%),
+    linear-gradient(90deg, rgba(6, 6, 8, 0.88) 0%, rgba(6, 6, 8, 0.62) 55%, rgba(6, 6, 8, 0.8) 100%);
+}
+.pm-scanlines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0, rgba(255, 255, 255, 0.035) 1px, transparent 1px, transparent 3px);
+}
+
+/* ---------- Typography ---------- */
+.font-display { font-family: "Rajdhani", sans-serif; text-transform: uppercase; }
+.skew-text { display: inline-block; transform: skewX(-8deg); }
+
+/* ---------- Keycap ---------- */
+.keycap {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.75rem; height: 1.75rem; padding: 0 0.45rem;
+  background: #f2f2f2; color: #0e0e10;
+  font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 0.95rem; line-height: 1;
+  border-radius: 0.2rem;
+  box-shadow: inset 0 -0.15rem 0 rgba(0, 0, 0, 0.25);
+}
+.keycap--sm { min-width: 1.35rem; height: 1.35rem; padding: 0 0.3rem; font-size: 0.75rem; }
+.keycap--ghost { background: transparent; color: #f2f2f2; box-shadow: inset 0 0 0 0.09rem rgba(255, 255, 255, 0.35); }
+
+/* ---------- Tab chips (parallelogram) ---------- */
+.tab-chip {
+  transform: skewX(-12deg);
+  background-color: var(--surface);
+  background-image: linear-gradient(var(--surface), var(--surface));
+  box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.06);
+  transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  cursor: pointer;
+}
+.tab-chip > span { display: inline-block; transform: skewX(12deg); }
+.tab-chip:hover { background-image: linear-gradient(var(--surface-hover), var(--surface-hover)); }
+.tab-chip.is-active {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  color: var(--accent-ink);
+  box-shadow: 0 0 1.5rem rgba(var(--accent-rgb), 0.35);
+}
+
+/* ---------- Main cards ---------- */
+.card {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  transform: skewX(-8deg);
+  background-color: #101014;
+  cursor: pointer;
+  transition: flex-grow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+  box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.07);
+  animation: pm-card-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.card.is-active {
+  flex-grow: 1.75;
+  box-shadow: inset 0 0 0 0.125rem var(--card-accent), 0 0 2.5rem rgba(var(--card-accent-rgb), 0.28);
+}
+/* Content is counter-skewed to stay upright; it overflows sideways to fill the corners (card has overflow: hidden) */
+.card__inner { position: absolute; top: 0; bottom: 0; left: -5vh; right: -5vh; transform: skewX(8deg); }
+.card__content { position: absolute; inset: 0; padding: 2.25rem calc(5vh + 2rem); display: flex; flex-direction: column; justify-content: space-between; }
+
+.card__scene { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.card__shade {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(180deg, rgba(6, 6, 8, 0) 35%, rgba(6, 6, 8, 0.92) 100%);
+}
+.card__dim { position: absolute; inset: 0; background: #060608; opacity: 0.58; transition: opacity 0.3s ease; }
+.card.is-active .card__dim { opacity: 0; }
+.card:hover .card__dim { opacity: 0.3; }
+.card.is-active:hover .card__dim { opacity: 0; }
+
+.card__icon { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.25s ease, opacity 0.25s ease; opacity: 0.35; }
+.card.is-active .card__icon { transform: scale(1.12); opacity: 1; color: var(--card-accent); }
+
+.card__bar { height: 0.25rem; width: 2.5rem; background: rgba(255, 255, 255, 0.25); transition: width 0.35s ease, background-color 0.25s ease; }
+.card.is-active .card__bar { width: 5rem; background: var(--card-accent); }
+
+/* Scene textures (no image files needed) */
+.scene-resume {
+  background-image:
+    repeating-linear-gradient(115deg, rgba(var(--card-accent-rgb), 0.10) 0 0.15rem, transparent 0.15rem 1.6rem),
+    radial-gradient(ellipse at 30% 25%, rgba(var(--card-accent-rgb), 0.35) 0%, transparent 60%),
+    linear-gradient(160deg, #2a2116 0%, #0d0d10 70%);
+}
+.scene-map {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 0.0625rem, transparent 0.0625rem),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0.0625rem, transparent 0.0625rem),
+    radial-gradient(ellipse at 60% 35%, rgba(var(--card-accent-rgb), 0.28) 0%, transparent 55%),
+    linear-gradient(160deg, #15232a 0%, #0c0e12 75%);
+  background-size: 2.5rem 2.5rem, 2.5rem 2.5rem, 100% 100%, 100% 100%;
+}
+.scene-settings {
+  background-image:
+    repeating-radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.05) 0 0.0625rem, transparent 0.0625rem 1.5rem),
+    radial-gradient(circle at 50% 38%, rgba(var(--card-accent-rgb), 0.26) 0%, transparent 55%),
+    linear-gradient(160deg, #1f1d26 0%, #0c0c10 75%);
+}
+.scene-disconnect {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(var(--card-accent-rgb), 0.08) 0 0.6rem, transparent 0.6rem 1.2rem),
+    radial-gradient(ellipse at 50% 30%, rgba(var(--card-accent-rgb), 0.3) 0%, transparent 55%),
+    linear-gradient(160deg, #2a1416 0%, #0d0c0e 75%);
+}
+
+.confirm-pulse { animation: pm-pulse 1s ease-in-out infinite; }
+
+/* ---------- Panels / inputs ---------- */
+.panel {
+  background-color: var(--surface);
+  background-image: linear-gradient(var(--surface), var(--surface));
+}
+
+.search-input { background: #0e0e12; color: #f2f2f2; outline: none; border: none; box-shadow: inset 0 -0.125rem 0 rgba(255, 255, 255, 0.12); user-select: text; }
+.search-input:focus { box-shadow: inset 0 -0.125rem 0 var(--accent); }
+.search-input::placeholder { color: #6b6f78; }
+
+.scroll-y { overflow-y: auto; }
+.scroll-y::-webkit-scrollbar { width: 0.3rem; }
+.scroll-y::-webkit-scrollbar-track { background: transparent; }
+.scroll-y::-webkit-scrollbar-thumb { background: rgba(var(--accent-rgb), 0.6); }
+
+/* ---------- Animations ---------- */
+@keyframes pm-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pm-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes pm-card-in { from { opacity: 0; transform: skewX(-8deg) translateY(2.5rem); } to { opacity: 1; transform: skewX(-8deg) translateY(0); } }
+@keyframes pm-slide-down { from { opacity: 0; transform: translateY(-1rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pm-slide-up { from { opacity: 0; transform: translateY(1rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pm-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+.anim-down { animation: pm-slide-down 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.anim-up { animation: pm-slide-up 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* =========================================================================
+   MAP
+   ========================================================================= */
+.pm-map { position: absolute; inset: 0; background: #070b11; cursor: crosshair; }
+.pm-map.style-atlas { background: #8fb3c9; }
+.pm-map.style-satellite { background: #10283c; }
+.pm-map .leaflet-container { background: transparent; font-family: "Inter", sans-serif; }
+.pm-map-frame { position: relative; height: 100%; overflow: hidden; box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.08); }
+
+/* Blip badge */
+.pm-blip { background: none; border: none; }
+.pm-blip-badge {
+  display: flex; align-items: center; justify-content: center;
+  width: 1.65rem; height: 1.65rem; border-radius: 50%;
+  background: #0e0f13; color: var(--c, #fefefe);
+  box-shadow: inset 0 0 0 0.125rem var(--c, #fefefe), 0 0.15rem 0.5rem rgba(0, 0, 0, 0.55);
+}
+.pm-blip-badge svg { width: 0.9rem; height: 0.9rem; }
+.pm-blip.is-selected .pm-blip-badge { background: var(--c); color: #0e0f13; box-shadow: 0 0 0 0.2rem rgba(var(--accent-rgb), 0.9), 0 0 1.2rem rgba(var(--accent-rgb), 0.6); }
+
+/* Player arrow */
+.pm-player { background: none; border: none; }
+.pm-player-dot {
+  width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--accent-rgb), 0.18);
+  box-shadow: 0 0 0 0.125rem rgba(var(--accent-rgb), 0.55);
+  animation: pm-ping 2s ease-out infinite;
+}
+.pm-player-arrow { color: var(--accent); width: 1.4rem; height: 1.4rem; transition: transform 0.2s linear; }
+@keyframes pm-ping { 0% { box-shadow: 0 0 0 0.125rem rgba(var(--accent-rgb), 0.55); } 70% { box-shadow: 0 0 0 0.9rem rgba(var(--accent-rgb), 0); } 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0); } }
+
+/* Waypoint */
+.pm-waypoint { background: none; border: none; }
+.pm-waypoint-pin { color: var(--accent); width: 2.2rem; height: 2.2rem; }
+
+/* Top-left location title */
+.pm-zone { pointer-events: none; text-shadow: 0 0.1rem 0.8rem rgba(0, 0, 0, 0.85); }
+
+/* Locations panel */
+.loc-row { transition: background-color 0.12s ease; cursor: pointer; }
+.loc-row:hover { background-image: linear-gradient(var(--surface-hover), var(--surface-hover)); }
+.loc-row.is-active { background-image: linear-gradient(rgba(var(--accent-rgb), 0.16), rgba(var(--accent-rgb), 0.16)); box-shadow: inset 0.2rem 0 0 var(--accent); }
+.loc-check { width: 1.15rem; height: 1.15rem; display: inline-flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 0.09rem rgba(255, 255, 255, 0.35); cursor: pointer; }
+.loc-check.is-on { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+
+.style-chip { cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease; }
+.style-chip.is-active { background-image: linear-gradient(var(--accent), var(--accent)); color: var(--accent-ink); }
+
+/* Category arrows in the locations panel */
+.set-arrow { cursor: pointer; transition: color 0.12s ease, transform 0.12s ease; }
+.set-arrow:hover { color: var(--accent); transform: scale(1.15); }
+
+/* Leaflet marker containers: the marker's center is the position, independent of rem scaling */
+.pm-blip, .pm-player { display: flex !important; align-items: center; justify-content: center; overflow: visible !important; }
+.pm-waypoint { display: flex !important; align-items: flex-end; justify-content: center; overflow: visible !important; }
+.leaflet-tooltip.pm-tip {
+  background: #0e0f13; color: #f2f2f2; border: none; border-radius: 0;
+  box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.12), 0 0.3rem 1rem rgba(0, 0, 0, 0.5);
+  font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+}
+.leaflet-tooltip.pm-tip::before { display: none; }
+
+/* Leaflet 1.9 applies mix-blend-mode to tiles; inconsistent in FiveM CEF -> disable */
+.leaflet-container img.leaflet-tile { mix-blend-mode: normal !important; }
